@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import {
   FaBell,
@@ -15,19 +15,16 @@ import {
   HiOutlineCog,
 } from "react-icons/hi";
 
-import {
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../../context/AuthContext";
 
 function Navbar() {
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
 
-  const [darkMode, setDarkMode] =
-    useState(false);
-
-  const [showProfile, setShowProfile] =
-    useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const notifications = [
     "New task assigned",
@@ -38,20 +35,22 @@ function Navbar() {
   // ================= LOGOUT =================
 
   const handleLogout = () => {
-    localStorage.clear();
-
-    navigate("/");
+    logout(); // Clear AuthContext + localStorage
+    navigate("/login");
   };
 
   // ================= DARK MODE =================
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-
-    document.documentElement.classList.toggle(
-      "dark"
-    );
+    document.documentElement.classList.toggle("dark");
   };
+
+  // ================= USER DISPLAY =================
+
+  const displayName = user?.name?.split(" ")[0] || "User";
+  const displayRole = user?.role === "admin" ? "Administrator" : "Employee";
+  const avatarLetter = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
     <nav
@@ -68,20 +67,12 @@ function Navbar() {
       <div className="flex items-center gap-4">
 
         {/* Mobile Menu */}
-
-        <button
-          className="
-            text-2xl text-gray-700
-            lg:hidden
-          "
-        >
+        <button className="text-2xl text-gray-700 lg:hidden">
           <FaBars />
         </button>
 
         {/* Logo */}
-
         <div>
-
           <h1
             className="
               bg-gradient-to-r
@@ -93,34 +84,20 @@ function Navbar() {
           >
             EMS Dashboard
           </h1>
-
           <p className="mt-1 text-xs text-gray-400">
             Employee Task Management
           </p>
-
         </div>
 
       </div>
 
       {/* ================= CENTER ================= */}
 
-      <div
-        className="
-          mx-10 hidden w-full max-w-xl
-          items-center
-          md:flex
-        "
-      >
-
+      <div className="mx-10 hidden w-full max-w-xl items-center md:flex">
         <div className="relative w-full">
-
           <FaSearch
-            className="
-              absolute left-4 top-1/2
-              -translate-y-1/2 text-gray-400
-            "
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
           />
-
           <input
             type="text"
             placeholder="Search employees, tasks..."
@@ -129,15 +106,12 @@ function Navbar() {
               border border-transparent
               bg-gray-100 pl-12 pr-4
               outline-none transition-all
-
               focus:border-blue-500
               focus:bg-white
               focus:shadow-lg
             "
           />
-
         </div>
-
       </div>
 
       {/* ================= RIGHT ================= */}
@@ -147,53 +121,32 @@ function Navbar() {
         {/* ================= DARK MODE ================= */}
 
         <button
-          onClick={
-            toggleDarkMode
-          }
+          onClick={toggleDarkMode}
           className="
             flex h-11 w-11 items-center justify-center
             rounded-xl bg-gray-100 transition
-            hover:scale-105
-            hover:bg-gray-200
+            hover:scale-105 hover:bg-gray-200
           "
         >
-
           {darkMode ? (
-            <FaSun
-              className="
-                text-lg text-yellow-500
-              "
-            />
+            <FaSun className="text-lg text-yellow-500" />
           ) : (
-            <FaMoon
-              className="
-                text-lg text-gray-700
-              "
-            />
+            <FaMoon className="text-lg text-gray-700" />
           )}
-
         </button>
 
         {/* ================= NOTIFICATIONS ================= */}
 
         <div className="group relative">
-
           <button
             className="
               relative flex h-11 w-11
               items-center justify-center
               rounded-xl bg-gray-100 transition
-              hover:scale-105
-              hover:bg-gray-200
+              hover:scale-105 hover:bg-gray-200
             "
           >
-
-            <FaBell
-              className="
-                text-lg text-gray-700
-              "
-            />
-
+            <FaBell className="text-lg text-gray-700" />
             <span
               className="
                 absolute right-2 top-2
@@ -201,11 +154,9 @@ function Navbar() {
                 bg-red-500
               "
             ></span>
-
           </button>
 
           {/* Dropdown */}
-
           <div
             className="
               invisible absolute right-0 mt-3
@@ -213,78 +164,37 @@ function Navbar() {
               border-gray-100 bg-white
               opacity-0 shadow-2xl transition-all
               duration-300
-
               group-hover:visible
               group-hover:opacity-100
             "
           >
-
             <div className="border-b p-4">
-
-              <h2
-                className="
-                  font-semibold text-gray-800
-                "
-              >
-                Notifications
-              </h2>
-
+              <h2 className="font-semibold text-gray-800">Notifications</h2>
             </div>
 
             <div className="max-h-80 overflow-y-auto">
-
-              {notifications.map(
-                (
-                  item,
-                  index
-                ) => (
-
-                  <div
-                    key={index}
-                    className="
-                      cursor-pointer border-b
-                      px-4 py-4 transition
-                      hover:bg-gray-50
-                    "
-                  >
-
-                    <p
-                      className="
-                        text-sm text-gray-700
-                      "
-                    >
-                      {item}
-                    </p>
-
-                    <span
-                      className="
-                        text-xs text-gray-400
-                      "
-                    >
-                      Just now
-                    </span>
-
-                  </div>
-
-                )
-              )}
-
+              {notifications.map((item, index) => (
+                <div
+                  key={index}
+                  className="
+                    cursor-pointer border-b
+                    px-4 py-4 transition
+                    hover:bg-gray-50
+                  "
+                >
+                  <p className="text-sm text-gray-700">{item}</p>
+                  <span className="text-xs text-gray-400">Just now</span>
+                </div>
+              ))}
             </div>
-
           </div>
-
         </div>
 
         {/* ================= PROFILE ================= */}
 
         <div className="relative">
-
           <button
-            onClick={() =>
-              setShowProfile(
-                !showProfile
-              )
-            }
+            onClick={() => setShowProfile(!showProfile)}
             className="
               flex items-center gap-3
               rounded-2xl bg-gray-100
@@ -292,66 +202,42 @@ function Navbar() {
               hover:bg-gray-200
             "
           >
+            {/* Avatar */}
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt="profile"
+                className="h-11 w-11 rounded-xl object-cover"
+              />
+            ) : (
+              <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                {avatarLetter}
+              </div>
+            )}
 
-            <img
-              src="https://i.pravatar.cc/150?img=12"
-              alt="profile"
-              className="
-                h-11 w-11 rounded-xl
-                object-cover
-              "
-            />
-
-            <div
-              className="
-                hidden text-left
-                md:block
-              "
-            >
-
-              <h3
-                className="
-                  text-sm font-semibold
-                  text-gray-800
-                "
-              >
-                Amit
+            <div className="hidden text-left md:block">
+              <h3 className="text-sm font-semibold text-gray-800">
+                {displayName}
               </h3>
-
-              <p
-                className="
-                  text-xs text-gray-500
-                "
-              >
-                Administrator
-              </p>
-
+              <p className="text-xs text-gray-500">{displayRole}</p>
             </div>
 
-            <FaChevronDown
-              className="
-                text-sm text-gray-500
-              "
-            />
-
+            <FaChevronDown className="text-sm text-gray-500" />
           </button>
 
           {/* ================= PROFILE DROPDOWN ================= */}
 
           {showProfile && (
-
             <div
               className="
                 absolute right-0 mt-3
                 w-64 overflow-hidden
                 rounded-2xl border
                 border-gray-100 bg-white
-                shadow-2xl
+                shadow-2xl z-50
               "
             >
-
               {/* Top */}
-
               <div
                 className="
                   border-b bg-gradient-to-r
@@ -359,50 +245,32 @@ function Navbar() {
                   p-5 text-white
                 "
               >
-
                 <div className="flex items-center gap-3">
-
-                  <img
-                    src="https://i.pravatar.cc/150?img=12"
-                    alt="profile"
-                    className="
-                      h-14 w-14 rounded-xl
-                      border-2 border-white
-                    "
-                  />
+                  {user?.profileImage ? (
+                    <img
+                      src={user.profileImage}
+                      alt="profile"
+                      className="h-14 w-14 rounded-xl border-2 border-white"
+                    />
+                  ) : (
+                    <div className="h-14 w-14 rounded-xl border-2 border-white bg-white/20 flex items-center justify-center text-white font-bold text-2xl">
+                      {avatarLetter}
+                    </div>
+                  )}
 
                   <div>
-
-                    <h2 className="font-semibold">
-                      Amit
-                    </h2>
-
-                    <p
-                      className="
-                        text-sm text-blue-100
-                      "
-                    >
-                      admin@gmail.com
-                    </p>
-
+                    <h2 className="font-semibold">{user?.name || "User"}</h2>
+                    <p className="text-sm text-blue-100">{user?.email || ""}</p>
                   </div>
-
                 </div>
-
               </div>
 
               {/* Menu */}
-
               <div className="p-2">
 
                 {/* Profile */}
-
                 <button
-                  onClick={() =>
-                    navigate(
-                      "/profile"
-                    )
-                  }
+                  onClick={() => { navigate("/profile"); setShowProfile(false); }}
                   className="
                     flex w-full items-center gap-3
                     rounded-xl px-4 py-3
@@ -410,21 +278,13 @@ function Navbar() {
                     hover:bg-gray-100
                   "
                 >
-
                   <HiOutlineUser className="text-lg" />
-
                   My Profile
-
                 </button>
 
                 {/* Settings */}
-
                 <button
-                  onClick={() =>
-                    navigate(
-                      "/settings"
-                    )
-                  }
+                  onClick={() => { navigate("/settings"); setShowProfile(false); }}
                   className="
                     flex w-full items-center gap-3
                     rounded-xl px-4 py-3
@@ -432,19 +292,13 @@ function Navbar() {
                     hover:bg-gray-100
                   "
                 >
-
                   <HiOutlineCog className="text-lg" />
-
                   Settings
-
                 </button>
 
                 {/* Logout */}
-
                 <button
-                  onClick={
-                    handleLogout
-                  }
+                  onClick={handleLogout}
                   className="
                     flex w-full items-center gap-3
                     rounded-xl px-4 py-3
@@ -452,19 +306,13 @@ function Navbar() {
                     hover:bg-red-50
                   "
                 >
-
                   <HiOutlineLogout className="text-lg" />
-
                   Logout
-
                 </button>
 
               </div>
-
             </div>
-
           )}
-
         </div>
 
       </div>

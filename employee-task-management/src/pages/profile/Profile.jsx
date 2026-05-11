@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import {
   User,
   Mail,
@@ -23,58 +24,46 @@ import {
 } from "react-icons/fa";
 
 import MainLayout from "../../layouts/MainLayout";
+import { AuthContext } from "../../context/AuthContext";
+import { getDashboardStats } from "../../services/taskService";
 
 function Profile() {
 
-  // ================= EMPLOYEE DATA =================
+  const { user } = useContext(AuthContext);
 
+  const [stats, setStats] = useState({ completedTasks: 0, pendingTasks: 0, totalTasks: 0, inProgressTasks: 0 });
+  const [recentTasks, setRecentTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getDashboardStats();
+        setStats(data.stats);
+        setRecentTasks(data.recentTasks || []);
+      } catch (e) {
+        console.error("Profile stats error:", e);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  // Use AuthContext user data or defaults
   const employee = {
-    name: "Amit Makwana",
-
-    role: "Full Stack Developer",
-
-    email: "makwanaamit985@gmail.com",
-
-    phone: "+91 63528 63230",
-
-    location: "Khambhat, Gujarat",
-
-    joinDate: "01 Jan 2026",
-
-    department: "Software Development",
-
-    status: "Active",
-
-    completedTasks: 24,
-
-    pendingTasks: 5,
-
-    productivity: "95%",
-
-    hoursThisWeek: 42,
+    name: user?.name || "—",
+    role: user?.department || user?.role || "—",
+    email: user?.email || "—",
+    phone: user?.phone || "Not set",
+    location: user?.address || "Not set",
+    joinDate: user?.createdAt
+      ? new Date(user.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+      : "—",
+    department: user?.department || user?.role || "—",
+    status: user?.status || "Active",
+    completedTasks: stats.completedTasks,
+    pendingTasks: stats.pendingTasks,
+    inProgressTasks: stats.inProgressTasks,
+    totalTasks: stats.totalTasks,
   };
-
-  // ================= RECENT TASKS =================
-
-  const recentTasks = [
-    {
-      title: "Employee Dashboard UI",
-      status: "Completed",
-      priority: "High",
-    },
-
-    {
-      title: "JWT Authentication System",
-      status: "In Progress",
-      priority: "High",
-    },
-
-    {
-      title: "Task Management API",
-      status: "Pending",
-      priority: "Medium",
-    },
-  ];
 
   return (
     <MainLayout>
@@ -95,11 +84,17 @@ function Profile() {
 
               <div className="relative">
 
-                <img
-                  src="https://i.pravatar.cc/150?img=12"
-                  alt="profile"
-                  className="h-28 w-28 rounded-3xl border-4 border-white object-cover shadow-xl"
-                />
+                {user?.profileImage ? (
+                  <img
+                    src={user.profileImage}
+                    alt="profile"
+                    className="h-28 w-28 rounded-3xl border-4 border-white object-cover shadow-xl"
+                  />
+                ) : (
+                  <div className="h-28 w-28 rounded-3xl border-4 border-white shadow-xl bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center text-white text-5xl font-bold">
+                    {user?.name?.charAt(0)?.toUpperCase() || "U"}
+                  </div>
+                )}
 
                 <button className="absolute bottom-0 right-0 rounded-full bg-black p-2 text-white shadow-lg transition hover:scale-110">
                   <Camera size={16} />
@@ -374,17 +369,17 @@ function Profile() {
                 />
 
                 <StatCard
-                  icon={<TrendingUp />}
-                  title="Productivity"
-                  value={employee.productivity}
-                  color="bg-indigo-100 text-indigo-700"
+                  icon={<Activity />}
+                  title="In Progress"
+                  value={employee.inProgressTasks}
+                  color="bg-blue-100 text-blue-700"
                 />
 
                 <StatCard
-                  icon={<Clock />}
-                  title="Hours This Week"
-                  value={employee.hoursThisWeek}
-                  color="bg-yellow-100 text-yellow-700"
+                  icon={<TrendingUp />}
+                  title="Total Tasks"
+                  value={employee.totalTasks}
+                  color="bg-indigo-100 text-indigo-700"
                 />
 
               </div>

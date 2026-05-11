@@ -19,12 +19,14 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Employees from "../pages/employees/Employees";
 import AddEmployee from "../pages/employees/AddEmployee";
 import EditEmployee from "../pages/employees/EditEmployee";
+import EmployeeDetails from "../pages/employees/EmployeeDetails";
 
 // ================= TASKS =================
 
 import Tasks from "../pages/tasks/Tasks";
 import AddTask from "../pages/tasks/AddTask";
 import TaskDetails from "../pages/tasks/TaskDetails";
+import EditTask from "../pages/tasks/EditTask";
 
 // ================= ATTENDANCE =================
 
@@ -132,6 +134,15 @@ function AppRoutes() {
           }
         />
 
+        <Route
+          path="/employees/:id"
+          element={
+            <ProtectedRoute>
+              <EmployeeDetails />
+            </ProtectedRoute>
+          }
+        />
+
         {/* ================================================= */}
         {/* TASKS */}
         {/* ================================================= */}
@@ -159,6 +170,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <TaskDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/tasks/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditTask />
             </ProtectedRoute>
           }
         />

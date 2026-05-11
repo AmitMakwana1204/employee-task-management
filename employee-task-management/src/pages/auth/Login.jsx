@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -12,9 +12,13 @@ import { motion } from "framer-motion";
 
 import toast from "react-hot-toast";
 
+import { loginUser } from "../../services/authService";
+import { AuthContext } from "../../context/AuthContext";
+
 function Login() {
 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -57,28 +61,27 @@ function Login() {
 
       setLoading(true);
 
-      // Fake API Delay
-      await new Promise((resolve) =>
-        setTimeout(resolve, 2000)
-      );
+      // Real API call
+      const data = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
 
-      // Fake Login
-      localStorage.setItem(
-        "token",
-        "123456"
-      );
+      // Store user + token via AuthContext
+      login(data.user, data.token);
 
-      toast.success(
-        "Login Successful"
-      );
+      toast.success("Login Successful! Welcome back 👋");
 
+      // Role-based redirect
       navigate("/dashboard");
 
     } catch (error) {
 
-      toast.error(
-        "Login Failed"
-      );
+      const message =
+        error?.response?.data?.message ||
+        "Login failed. Check your credentials.";
+
+      toast.error(message);
 
     } finally {
 

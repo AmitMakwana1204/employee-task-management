@@ -15,6 +15,8 @@ import { motion } from "framer-motion";
 
 import toast from "react-hot-toast";
 
+import { registerUser } from "../../services/authService";
+
 function Register() {
 
   const navigate = useNavigate();
@@ -74,28 +76,33 @@ function Register() {
       return;
     }
 
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     try {
 
       setLoading(true);
 
-      // Fake API Delay
-      await new Promise((resolve) =>
-        setTimeout(resolve, 2000)
-      );
+      // Real API call
+      await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      console.log(formData);
+      toast.success("Account created! Please login.");
 
-      toast.success(
-        "Registration Successful"
-      );
-
-      navigate("/");
+      navigate("/login");
 
     } catch (error) {
 
-      toast.error(
-        "Registration Failed"
-      );
+      const message =
+        error?.response?.data?.message ||
+        "Registration failed. Please try again.";
+
+      toast.error(message);
 
     } finally {
 

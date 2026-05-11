@@ -1,9 +1,25 @@
 import api from "./api";
 
-// Get All Tasks
-export const getTasks = async () => {
+// Get All Tasks (supports query params: search, status, priority)
+export const getTasks = async (params = {}) => {
 
-  const response = await api.get("/tasks");
+  const response = await api.get("/tasks", { params });
+
+  return response.data;
+};
+
+// Get Single Task by ID
+export const getTaskById = async (id) => {
+
+  const response = await api.get(`/tasks/${id}`);
+
+  return response.data;
+};
+
+// Get Dashboard Stats
+export const getDashboardStats = async () => {
+
+  const response = await api.get("/tasks/dashboard/stats");
 
   return response.data;
 };
