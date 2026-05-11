@@ -16,53 +16,85 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
+import {
+  FaGithub,
+  FaLinkedin,
+  FaGlobe,
+} from "react-icons/fa";
+
 import MainLayout from "../../layouts/MainLayout";
 
 function Profile() {
+
+  // ================= EMPLOYEE DATA =================
+
   const employee = {
     name: "Amit Makwana",
-    role: "Frontend Developer",
-    email: "amit@example.com",
-    phone: "+91 98765 43210",
-    location: "Vadodara, Gujarat",
-    joinDate: "12 Jan 2025",
-    department: "Engineering",
+
+    role: "Full Stack Developer",
+
+    email: "makwanaamit985@gmail.com",
+
+    phone: "+91 63528 63230",
+
+    location: "Khambhat, Gujarat",
+
+    joinDate: "01 Jan 2026",
+
+    department: "Software Development",
+
     status: "Active",
-    completedTasks: 128,
-    pendingTasks: 9,
-    productivity: "92%",
-    hoursThisWeek: 38,
+
+    completedTasks: 24,
+
+    pendingTasks: 5,
+
+    productivity: "95%",
+
+    hoursThisWeek: 42,
   };
+
+  // ================= RECENT TASKS =================
 
   const recentTasks = [
     {
-      title: "Dashboard UI Design",
+      title: "Employee Dashboard UI",
       status: "Completed",
       priority: "High",
     },
+
     {
-      title: "Employee API Integration",
+      title: "JWT Authentication System",
       status: "In Progress",
-      priority: "Medium",
-    },
-    {
-      title: "Authentication Module",
-      status: "Pending",
       priority: "High",
+    },
+
+    {
+      title: "Task Management API",
+      status: "Pending",
+      priority: "Medium",
     },
   ];
 
   return (
     <MainLayout>
+
       <div className="min-h-screen bg-gray-100 p-6">
-        {/* Top Profile Banner */}
+
+        {/* ================= PROFILE BANNER ================= */}
+
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 p-8 shadow-2xl">
+
           <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
 
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            {/* Left */}
+
+            {/* ================= LEFT ================= */}
+
             <div className="flex items-center gap-5">
+
               <div className="relative">
+
                 <img
                   src="https://i.pravatar.cc/150?img=12"
                   alt="profile"
@@ -75,6 +107,7 @@ function Profile() {
               </div>
 
               <div className="text-white">
+
                 <h1 className="text-4xl font-bold">
                   {employee.name}
                 </h1>
@@ -84,6 +117,7 @@ function Profile() {
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-3">
+
                   <span className="rounded-full bg-white/20 px-4 py-1 text-sm backdrop-blur">
                     {employee.department}
                   </span>
@@ -91,39 +125,103 @@ function Profile() {
                   <span className="rounded-full bg-green-400/20 px-4 py-1 text-sm text-green-100">
                     {employee.status}
                   </span>
+
+                </div>
+
+                {/* ================= SOCIAL LINKS ================= */}
+
+                <div className="mt-5 flex items-center gap-4">
+
+                  <a
+                    href="https://github.com/AmitMakwana1204"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-xl bg-white/10 p-3 transition hover:scale-110 hover:bg-white/20"
+                  >
+                    <FaGithub />
+                  </a>
+
+                  <a
+                    href="https://www.linkedin.com/in/amit-makwana-aa255b407"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-xl bg-white/10 p-3 transition hover:scale-110 hover:bg-white/20"
+                  >
+                    <FaLinkedin />
+                  </a>
+
+                  <a
+                    href="https://new-portfolio-ten-peach.vercel.app/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-xl bg-white/10 p-3 transition hover:scale-110 hover:bg-white/20"
+                  >
+                    <FaGlobe />
+                  </a>
+
                 </div>
               </div>
             </div>
 
-            {/* Right */}
-            <div className="flex gap-3">
-              <button className="flex items-center gap-2 rounded-2xl bg-white px-5 py-3 font-semibold text-black transition hover:scale-105">
-                <Pencil size={18} />
-                Edit Profile
-              </button>
+            {/* ================= RIGHT ================= */}
 
-              <button className="rounded-2xl border border-white/40 px-5 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/10">
-                View Reports
-              </button>
+            <div className="flex gap-3">
+
+              <a
+                href="https://github.com/AmitMakwana1204"
+                target="_blank"
+                rel="noreferrer"
+                className="
+                  flex items-center gap-2 rounded-2xl
+                  bg-white px-5 py-3 font-semibold
+                  text-black transition hover:scale-105
+                "
+              >
+                <Pencil size={18} />
+
+                GitHub
+              </a>
+
+              <a
+                href="https://new-portfolio-ten-peach.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="
+                  rounded-2xl border border-white/40
+                  px-5 py-3 font-semibold text-white
+                  backdrop-blur transition hover:bg-white/10
+                "
+              >
+                View Portfolio
+              </a>
+
             </div>
           </div>
         </div>
 
-        {/* Main Grid */}
+        {/* ================= MAIN GRID ================= */}
+
         <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-3">
-          {/* LEFT SIDE */}
+
+          {/* ================= LEFT SIDE ================= */}
+
           <div className="space-y-6 xl:col-span-2">
-            {/* Employee Info */}
+
+            {/* ================= INFO ================= */}
+
             <div className="rounded-3xl bg-white p-6 shadow-lg">
+
               <div className="mb-6 flex items-center justify-between">
+
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Employee Information
+                  Developer Information
                 </h2>
 
                 <ShieldCheck className="text-indigo-600" />
               </div>
 
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+
                 <InfoCard
                   icon={<Mail />}
                   title="Email"
@@ -159,12 +257,16 @@ function Profile() {
                   title="Role"
                   value={employee.role}
                 />
+
               </div>
             </div>
 
-            {/* Recent Tasks */}
+            {/* ================= RECENT TASKS ================= */}
+
             <div className="rounded-3xl bg-white p-6 shadow-lg">
+
               <div className="mb-6 flex items-center justify-between">
+
                 <h2 className="text-2xl font-bold text-gray-800">
                   Recent Tasks
                 </h2>
@@ -173,12 +275,22 @@ function Profile() {
               </div>
 
               <div className="space-y-4">
+
                 {recentTasks.map((task, index) => (
+
                   <div
                     key={index}
-                    className="flex flex-col gap-4 rounded-2xl border border-gray-100 p-5 transition hover:shadow-md md:flex-row md:items-center md:justify-between"
+                    className="
+                      flex flex-col gap-4 rounded-2xl
+                      border border-gray-100 p-5
+                      transition hover:shadow-md
+                      md:flex-row md:items-center
+                      md:justify-between
+                    "
                   >
+
                     <div>
+
                       <h3 className="text-lg font-semibold text-gray-800">
                         {task.title}
                       </h3>
@@ -189,26 +301,43 @@ function Profile() {
                     </div>
 
                     <div>
+
                       {task.status === "Completed" && (
-                        <span className="flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-700">
+                        <span className="
+                          flex items-center gap-2 rounded-full
+                          bg-green-100 px-4 py-2 text-sm
+                          font-medium text-green-700
+                        ">
                           <CheckCircle2 size={16} />
+
                           Completed
                         </span>
                       )}
 
                       {task.status === "In Progress" && (
-                        <span className="flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 text-sm font-medium text-yellow-700">
+                        <span className="
+                          flex items-center gap-2 rounded-full
+                          bg-yellow-100 px-4 py-2 text-sm
+                          font-medium text-yellow-700
+                        ">
                           <Clock size={16} />
+
                           In Progress
                         </span>
                       )}
 
                       {task.status === "Pending" && (
-                        <span className="flex items-center gap-2 rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-700">
+                        <span className="
+                          flex items-center gap-2 rounded-full
+                          bg-red-100 px-4 py-2 text-sm
+                          font-medium text-red-700
+                        ">
                           <AlertCircle size={16} />
+
                           Pending
                         </span>
                       )}
+
                     </div>
                   </div>
                 ))}
@@ -216,15 +345,20 @@ function Profile() {
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
+          {/* ================= RIGHT SIDE ================= */}
+
           <div className="space-y-6">
-            {/* Stats */}
+
+            {/* ================= STATS ================= */}
+
             <div className="rounded-3xl bg-white p-6 shadow-lg">
+
               <h2 className="mb-6 text-2xl font-bold text-gray-800">
                 Performance Stats
               </h2>
 
               <div className="space-y-5">
+
                 <StatCard
                   icon={<CheckCircle2 />}
                   title="Completed Tasks"
@@ -252,12 +386,20 @@ function Profile() {
                   value={employee.hoursThisWeek}
                   color="bg-yellow-100 text-yellow-700"
                 />
+
               </div>
             </div>
 
-            {/* Achievement */}
-            <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-700 p-6 text-white shadow-2xl">
+            {/* ================= ACHIEVEMENT ================= */}
+
+            <div className="
+              rounded-3xl bg-gradient-to-br
+              from-indigo-600 to-purple-700
+              p-6 text-white shadow-2xl
+            ">
+
               <div className="flex items-center justify-between">
+
                 <h2 className="text-2xl font-bold">
                   Achievement
                 </h2>
@@ -266,17 +408,29 @@ function Profile() {
               </div>
 
               <div className="mt-6 rounded-2xl bg-white/10 p-5 backdrop-blur">
+
                 <h3 className="text-xl font-semibold">
-                  Employee of the Month
+                  MERN Stack Developer
                 </h3>
 
                 <p className="mt-2 text-sm text-indigo-100">
-                  Excellent performance and task completion rate in April 2026.
+                  Building modern full-stack web applications
+                  using React.js, Node.js, Express.js and MongoDB.
                 </p>
 
-                <button className="mt-5 rounded-xl bg-white px-5 py-3 font-semibold text-indigo-700 transition hover:scale-105">
-                  View Certificate
-                </button>
+                <a
+                  href="https://new-portfolio-ten-peach.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="
+                    mt-5 inline-block rounded-xl bg-white
+                    px-5 py-3 font-semibold text-indigo-700
+                    transition hover:scale-105
+                  "
+                >
+                  View Portfolio
+                </a>
+
               </div>
             </div>
           </div>
@@ -286,14 +440,21 @@ function Profile() {
   );
 }
 
+// ================= INFO CARD =================
+
 function InfoCard({ icon, title, value }) {
   return (
-    <div className="flex items-start gap-4 rounded-2xl bg-gray-50 p-5 transition hover:shadow-md">
+    <div className="
+      flex items-start gap-4 rounded-2xl
+      bg-gray-50 p-5 transition hover:shadow-md
+    ">
+
       <div className="rounded-xl bg-indigo-100 p-3 text-indigo-700">
         {icon}
       </div>
 
       <div>
+
         <p className="text-sm text-gray-500">
           {title}
         </p>
@@ -301,20 +462,30 @@ function InfoCard({ icon, title, value }) {
         <h3 className="mt-1 text-lg font-semibold text-gray-800">
           {value}
         </h3>
+
       </div>
     </div>
   );
 }
 
+// ================= STAT CARD =================
+
 function StatCard({ icon, title, value, color }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-gray-100 p-5 transition hover:shadow-md">
+    <div className="
+      flex items-center justify-between
+      rounded-2xl border border-gray-100
+      p-5 transition hover:shadow-md
+    ">
+
       <div className="flex items-center gap-4">
+
         <div className={`rounded-xl p-3 ${color}`}>
           {icon}
         </div>
 
         <div>
+
           <p className="text-sm text-gray-500">
             {title}
           </p>
@@ -322,6 +493,7 @@ function StatCard({ icon, title, value, color }) {
           <h3 className="text-xl font-bold text-gray-800">
             {value}
           </h3>
+
         </div>
       </div>
     </div>

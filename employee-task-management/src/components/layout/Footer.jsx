@@ -6,7 +6,6 @@ import {
   FaArrowUp,
   FaEnvelope,
   FaPhoneAlt,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
@@ -21,9 +20,11 @@ function Footer() {
     });
   };
 
+  // ================= QUICK LINKS =================
+
   const quickLinks = [
     {
-      name: "Dashboard",
+      name: "Home",
       path: "/",
     },
 
@@ -35,16 +36,6 @@ function Footer() {
     {
       name: "Tasks",
       path: "/tasks",
-    },
-
-    {
-      name: "Attendance",
-      path: "/attendance",
-    },
-
-    {
-      name: "Settings",
-      path: "/settings",
     },
   ];
 
@@ -63,16 +54,10 @@ function Footer() {
 
       <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
 
-      {/* ================= BACKGROUND EFFECT ================= */}
-
-      <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl"></div>
-
-      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl"></div>
-
       {/* ================= MAIN CONTENT ================= */}
 
       <div className="relative px-6 py-10 lg:px-10">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
 
           {/* ================= BRAND ================= */}
 
@@ -87,31 +72,33 @@ function Footer() {
                   shadow-xl
                 "
               >
-                ET
+                TP
               </div>
 
               <div>
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                  Employee Task
+                  TaskPilot
                 </h2>
 
                 <p className="text-sm text-gray-500">
-                  Management System
+                  Employee Task Management
                 </p>
               </div>
             </div>
 
-            <p className="mt-5 leading-relaxed text-gray-500">
-              Powerful employee and task management dashboard
-              designed for productivity, workflow automation
-              and modern team collaboration.
+            <p className="mt-4 leading-relaxed text-gray-500">
+              Modern employee task management system
+              built using MERN stack.
             </p>
 
-            {/* Social */}
+            {/* ================= SOCIAL ================= */}
 
             <div className="mt-6 flex items-center gap-4">
+
               <a
-                href="#"
+                href="https://github.com/AmitMakwana1204"
+                target="_blank"
+                rel="noreferrer"
                 className="
                   flex h-11 w-11 items-center justify-center
                   rounded-2xl bg-gray-100 text-lg transition
@@ -125,7 +112,9 @@ function Footer() {
               </a>
 
               <a
-                href="#"
+                href="https://www.linkedin.com/"
+                target="_blank"
+                rel="noreferrer"
                 className="
                   flex h-11 w-11 items-center justify-center
                   rounded-2xl bg-gray-100 text-lg transition
@@ -139,7 +128,9 @@ function Footer() {
               </a>
 
               <a
-                href="#"
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noreferrer"
                 className="
                   flex h-11 w-11 items-center justify-center
                   rounded-2xl bg-gray-100 text-lg transition
@@ -162,21 +153,19 @@ function Footer() {
             </h3>
 
             <div className="flex flex-col gap-4">
-              {quickLinks.map(
-                (item, index) => (
-                  <NavLink
-                    key={index}
-                    to={item.path}
-                    className="
-                      text-gray-500 transition
-                      hover:translate-x-1
-                      hover:text-blue-600
-                    "
-                  >
-                    {item.name}
-                  </NavLink>
-                )
-              )}
+              {quickLinks.map((item, index) => (
+                <NavLink
+                  key={index}
+                  to={item.path}
+                  className="
+                    text-gray-500 transition
+                    hover:translate-x-1
+                    hover:text-blue-600
+                  "
+                >
+                  {item.name}
+                </NavLink>
+              ))}
             </div>
           </div>
 
@@ -188,6 +177,7 @@ function Footer() {
             </h3>
 
             <div className="space-y-5">
+
               <div className="flex items-start gap-4">
                 <div
                   className="
@@ -206,7 +196,7 @@ function Footer() {
                   </p>
 
                   <h4 className="font-medium text-gray-700 dark:text-gray-200">
-                    Makwanamit985@gmail.com
+                    makwanaamit985@gmail.com
                   </h4>
                 </div>
               </div>
@@ -233,69 +223,6 @@ function Footer() {
                   </h4>
                 </div>
               </div>
-
-              <div className="flex items-start gap-4">
-                <div
-                  className="
-                    flex h-11 w-11 items-center justify-center
-                    rounded-2xl bg-red-100 text-red-600
-
-                    dark:bg-gray-800
-                  "
-                >
-                  <FaMapMarkerAlt />
-                </div>
-
-                <div>
-                  <p className="text-sm text-gray-400">
-                    Location
-                  </p>
-
-                  <h4 className="font-medium text-gray-700 dark:text-gray-200">
-                    Khambhat, Gujarat
-                  </h4>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ================= NEWSLETTER ================= */}
-
-          <div>
-            <h3 className="mb-5 text-xl font-bold text-gray-800 dark:text-white">
-              Newsletter
-            </h3>
-
-            <p className="mb-5 text-gray-500">
-              Subscribe to get latest updates, company news
-              and productivity tips.
-            </p>
-
-            <div className="space-y-4">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="
-                  h-12 w-full rounded-2xl border border-gray-200
-                  bg-gray-100 px-4 outline-none transition
-                  focus:border-blue-500 focus:bg-white
-
-                  dark:border-gray-700
-                  dark:bg-gray-900
-                  dark:text-white
-                "
-              />
-
-              <button
-                className="
-                  h-12 w-full rounded-2xl
-                  bg-gradient-to-r from-blue-500 to-indigo-600
-                  font-semibold text-white shadow-lg transition
-                  hover:scale-[1.02]
-                "
-              >
-                Subscribe Now
-              </button>
             </div>
           </div>
         </div>
@@ -314,16 +241,14 @@ function Footer() {
             lg:justify-between
           "
         >
-          {/* Left */}
+          {/* ================= LEFT ================= */}
 
           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
             <span>
               © 2026 All Rights Reserved.
             </span>
 
-            <span>
-              |
-            </span>
+            <span>|</span>
 
             <span className="flex items-center gap-2">
               Made with
@@ -333,12 +258,12 @@ function Footer() {
               by
 
               <span className="font-semibold text-blue-600">
-                Amit
+                Amit Makwana
               </span>
             </span>
           </div>
 
-          {/* Right */}
+          {/* ================= RIGHT ================= */}
 
           <button
             onClick={scrollToTop}
