@@ -9,6 +9,9 @@ import {
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
+import OAuthSuccess from "../pages/auth/OAuthSuccess";
 
 // ================= DASHBOARD =================
 
@@ -88,6 +91,21 @@ function AppRoutes() {
         <Route
           path="/register"
           element={<Register />}
+        />
+
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/reset-password/:token"
+          element={<ResetPassword />}
+        />
+
+        <Route
+          path="/oauth-success"
+          element={<OAuthSuccess />}
         />
 
         {/* ================================================= */}

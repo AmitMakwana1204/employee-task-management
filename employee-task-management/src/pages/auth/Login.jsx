@@ -1,125 +1,80 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import {
-  FaEnvelope,
-  FaLock,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
-
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
-
 import toast from "react-hot-toast";
-
-import { loginUser } from "../../services/authService";
+import { loginUser, initiateGoogleLogin } from "../../services/authService";
 import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [remember, setRemember] = useState(false);
 
-  const [loading, setLoading] =
-    useState(false);
-
-  const [remember, setRemember] =
-    useState(false);
-
-  const [formData, setFormData] =
-    useState({
-      email: "",
-      password: "",
-    });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
-    if (!formData.email ||
-        !formData.password) {
-
-      toast.error(
-        "All fields are required"
-      );
-
+    if (!formData.email || !formData.password) {
+      toast.error("All fields are required");
       return;
     }
 
     try {
-
       setLoading(true);
-
-      // Real API call
       const data = await loginUser({
         email: formData.email,
         password: formData.password,
       });
 
-      // Store user + token via AuthContext
       login(data.user, data.token);
-
       toast.success("Login Successful! Welcome back 👋");
-
-      // Role-based redirect
       navigate("/dashboard");
-
     } catch (error) {
-
       const message =
         error?.response?.data?.message ||
         "Login failed. Check your credentials.";
-
       toast.error(message);
-
     } finally {
-
       setLoading(false);
-
     }
+  };
+
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    initiateGoogleLogin();
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-indigo-100 p-5">
-
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 40,
-        }}
-
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-
-        transition={{
-          duration: 0.6,
-        }}
-
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2"
       >
-
-        {/* Left */}
+        {/* Left Panel */}
         <div className="hidden md:flex bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-10 flex-col justify-center relative overflow-hidden">
-
-          <div className="absolute w-72 h-72 bg-white/10 rounded-full -top-20 -left-20"></div>
-
-          <div className="absolute w-72 h-72 bg-white/10 rounded-full -bottom-20 -right-20"></div>
+          <div className="absolute w-72 h-72 bg-white/10 rounded-full -top-20 -left-20" />
+          <div className="absolute w-72 h-72 bg-white/10 rounded-full -bottom-20 -right-20" />
 
           <div className="relative z-10">
-
             <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-md">
               <FaLock className="text-4xl" />
             </div>
@@ -131,184 +86,149 @@ function Login() {
             </h1>
 
             <p className="mt-5 text-lg text-blue-100">
-              Manage employees,
-              tasks and workflow
-              efficiently.
+              Manage employees, tasks and workflow efficiently.
             </p>
 
+            {/* Feature Bullets */}
+            <div className="mt-8 space-y-3">
+              {[
+                "Role-based access control",
+                "Real-time task tracking",
+                "Team collaboration tools",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-blue-100">
+                  <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-2 h-2 bg-white rounded-full" />
+                  </div>
+                  <span className="text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
-
         </div>
 
-        {/* Right */}
+        {/* Right Panel */}
         <div className="p-8 md:p-12 flex flex-col justify-center">
-
-          <h2 className="text-4xl font-bold text-gray-800">
-            Welcome Back 👋
-          </h2>
-
+          <h2 className="text-4xl font-bold text-gray-800">Welcome Back 👋</h2>
           <p className="text-gray-500 mt-2 mb-8">
-            Login to continue
-            managing your workspace.
+            Login to continue managing your workspace.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-5"
-          >
-
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-
               <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Email Address
               </label>
-
               <div className="relative">
-
                 <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
                 <input
                   type="email"
                   name="email"
                   placeholder="Enter email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full h-12 border border-gray-300 rounded-xl pl-12 pr-4 outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-12 border border-gray-300 rounded-xl pl-12 pr-4 outline-none focus:ring-2 focus:ring-blue-500 transition text-gray-700"
                 />
-
               </div>
-
             </div>
 
             {/* Password */}
             <div>
-
               <label className="block mb-2 text-sm font-semibold text-gray-700">
                 Password
               </label>
-
               <div className="relative">
-
                 <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
                 <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Enter password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full h-12 border border-gray-300 rounded-xl pl-12 pr-12 outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-12 border border-gray-300 rounded-xl pl-12 pr-12 outline-none focus:ring-2 focus:ring-blue-500 transition text-gray-700"
                 />
-
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
                 >
-                  {showPassword
-                    ? <FaEyeSlash />
-                    : <FaEye />}
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
-
               </div>
-
             </div>
 
-            {/* Remember */}
+            {/* Remember + Forgot */}
             <div className="flex items-center justify-between text-sm">
-
-              <label className="flex items-center gap-2 cursor-pointer">
-
+              <label className="flex items-center gap-2 cursor-pointer text-gray-600">
                 <input
                   type="checkbox"
                   checked={remember}
-                  onChange={() =>
-                    setRemember(
-                      !remember
-                    )
-                  }
+                  onChange={() => setRemember(!remember)}
+                  className="accent-blue-600 w-4 h-4"
                 />
-
                 Remember me
-
               </label>
 
               <Link
                 to="/forgot-password"
-                className="text-blue-600 hover:underline"
+                className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition"
               >
                 Forgot Password?
               </Link>
-
             </div>
 
-            {/* Button */}
+            {/* Login Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 transition rounded-xl text-white font-semibold text-lg flex items-center justify-center"
+              className="w-full h-12 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition rounded-xl text-white font-semibold text-lg flex items-center justify-center shadow-lg shadow-blue-200"
             >
-
               {loading ? (
-
-                <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-
+                <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-
                 "Login"
-
               )}
-
             </button>
 
             {/* Divider */}
             <div className="relative">
-
-              <div className="border-t border-gray-300"></div>
-
-              <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-sm text-gray-400">
-                OR
+              <div className="border-t border-gray-200" />
+              <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-gray-400 font-medium">
+                OR CONTINUE WITH
               </span>
-
             </div>
 
-            {/* Google */}
+            {/* Google Button */}
             <button
               type="button"
-              className="w-full h-12 border border-gray-300 rounded-xl hover:bg-gray-50 transition"
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+              className="w-full h-12 border-2 border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition flex items-center justify-center gap-3 font-semibold text-gray-700 text-sm"
             >
-              Continue with Google
+              {googleLoading ? (
+                <div className="w-5 h-5 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <FcGoogle className="text-2xl" />
+                  Continue with Google
+                </>
+              )}
             </button>
 
-            {/* Register */}
-            <p className="text-center text-gray-500">
-
+            {/* Register Link */}
+            <p className="text-center text-gray-500 text-sm">
               Don&apos;t have an account?{" "}
-
               <Link
                 to="/register"
                 className="text-blue-600 font-semibold hover:underline"
               >
                 Register
               </Link>
-
             </p>
-
           </form>
-
         </div>
-
       </motion.div>
-
     </div>
   );
 }

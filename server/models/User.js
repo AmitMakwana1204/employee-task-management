@@ -27,9 +27,30 @@ const UserSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: false, // Not required for Google OAuth users
       minlength: [6, "Password must be at least 6 characters"],
       select: false, // Don't return password by default
+    },
+
+    // ========================
+    // GOOGLE OAUTH
+    // ========================
+    googleId: {
+      type: String,
+      default: "",
+    },
+
+    // ========================
+    // PASSWORD RESET
+    // ========================
+    resetPasswordToken: {
+      type: String,
+      select: false,
+    },
+
+    resetPasswordExpire: {
+      type: Date,
+      select: false,
     },
 
     // ========================
@@ -108,8 +129,8 @@ const UserSchema = new mongoose.Schema(
 // HASH PASSWORD BEFORE SAVE
 // ========================
 UserSchema.pre("save", async function (next) {
-  // Only hash if password was modified
-  if (!this.isModified("password")) return next();
+  // Only hash if password was modified and exists
+  if (!this.isModified("password") || !this.password) return next();
 
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);

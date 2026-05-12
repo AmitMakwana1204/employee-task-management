@@ -9,6 +9,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
 const path = require("path");
+const passport = require("./config/passport");
 
 // Load environment variables
 dotenv.config();
@@ -53,6 +54,9 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// Initialize Passport (for Google OAuth)
+app.use(passport.initialize());
+
 // Serve static uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -62,6 +66,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/tasks", taskRoutes);
+
+// ========================
+// FAVICON (prevents 404 / CORB warning on API domain)
+// ========================
+app.get("/favicon.ico", (req, res) => res.status(204).end());
 
 // ========================
 // HEALTH CHECK
